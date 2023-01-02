@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "202770483316",
+    "project_id": "smart-naka-lifetime-error",
+    "storage_bucket": "smart-naka-lifetime-error.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202770483316:android:7a07baf2a2fda91587e921",
+        "android_client_info": {
+          "package_name": "ethos.lifetime.smartnaka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202770483316-tcgtonjghs5vni486etc859fund3vbqk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ethos.lifetime.smartnaka",
+            "certificate_hash": "8ee4857323a0a14d90904d3841aa0647ec3438bd"
+          }
+        },
+        {
+          "client_id": "202770483316-rh0g0l00e6l82l8936243f29469jbmeb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB445b1GS2RbOc8PyAjvnJ6f61SRkRAqds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202770483316-rh0g0l00e6l82l8936243f29469jbmeb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
