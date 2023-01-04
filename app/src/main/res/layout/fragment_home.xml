@@ -90,6 +90,13 @@
             android:layout_gravity="center"
             />
 
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/img_viewer"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            />
+
     </LinearLayout>
 
 
