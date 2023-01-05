@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
 import ethos.lifetime.smartnaka.databinding.FragmentHomeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -22,6 +24,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val REQUEST_IMAGE_CAPTURE = 1
+    private var img : Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +56,11 @@ class HomeFragment : Fragment() {
 
             }
         }
+
+        if(!Python.isStarted()) {
+            Python.start(AndroidPlatform(requireContext()))
+        }
+
     }
 
 
@@ -61,7 +69,7 @@ class HomeFragment : Fragment() {
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(requireContext(), "Error Occured : $e", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Error Occured : $e", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -70,6 +78,13 @@ class HomeFragment : Fragment() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             binding.imgViewer.setImageBitmap(imageBitmap)
+            img = imageBitmap
+            val py = Python.getInstance()
+            val pyObj = py.getModule("script")
+
+            val obj = pyObj.callAttr("main", img)
+
+            Toast.makeText(requireContext(), "The result is : ${obj.toString()}", Toast.LENGTH_SHORT).show()
         }
     }
 
