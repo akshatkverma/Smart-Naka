@@ -117,10 +117,10 @@ class SignInFragment : Fragment() {
     }
 
     private fun checkUser() {
-//        val firebaseUser = firebaseAuth.currentUser
-//        if (firebaseUser != null) {
+        val firebaseUser = firebaseAuth.currentUser
+        if (firebaseUser != null) {
             findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToHomeFragment())
-//        }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

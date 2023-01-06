@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.DiscretePathEffect
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -23,6 +24,7 @@ import ethos.lifetime.smartnaka.databinding.FragmentHomeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
@@ -58,6 +60,9 @@ class HomeFragment : Fragment() {
         }
 
         binding.searchButton.setOnClickListener {
+            binding.firebaseProgressBar.visibility = View.VISIBLE
+            binding.searchButton.visibility = View.GONE
+
             val regNumber = binding.registrationNumber.text.toString()
             val engineNum = binding.engineNumber.text.toString()
             val chassisNum = binding.chassisNumber.text.toString()
@@ -65,11 +70,21 @@ class HomeFragment : Fragment() {
             val dao = VehiclesDao()
 
             GlobalScope.launch (Dispatchers.IO){
-                if(dao.checkVehicle(regNumber, chassisNum, engineNum))
-                    Log.w("Firebase", "Vehicle Found")
-                else
-                    Log.w("Firebase", "Vehicle NOT Found !!!!")
+                if(dao.checkVehicle(regNumber, chassisNum, engineNum)) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Vehicle is Stolen !!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Vehicle not found in database.", Toast.LENGTH_SHORT).show()
+                    }
+                }
 
+                withContext(Dispatchers.Main) {
+                    binding.firebaseProgressBar.visibility = View.GONE
+                    binding.searchButton.visibility = View.VISIBLE
+                }
             }
         }
 

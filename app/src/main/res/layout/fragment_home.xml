@@ -79,8 +79,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
         <com.google.android.material.button.MaterialButton
             android:layout_marginTop="20dp"
             android:id="@+id/searchButton"
@@ -90,6 +88,24 @@
             android:layout_gravity="center"
             />
 
+        <ProgressBar
+            android:layout_marginTop="20dp"
+            android:id="@+id/firebaseProgressBar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/capturedImageTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Captured Image:"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="gone"
+            />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/img_viewer"
