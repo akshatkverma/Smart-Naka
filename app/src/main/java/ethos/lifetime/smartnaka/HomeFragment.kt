@@ -10,10 +10,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
+import com.google.android.material.textfield.TextInputEditText
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import ethos.lifetime.smartnaka.databinding.FragmentHomeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -25,6 +30,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val REQUEST_IMAGE_CAPTURE = 1
     private var img : Bitmap? = null
+    private var currentTextField : TextInputEditText? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +43,18 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.textField1.setEndIconOnClickListener {
-//            Toast.makeText(requireContext(), "Button Clicked", Toast.LENGTH_SHORT).show()
             dispatchTakePictureIntent()
+            currentTextField = binding.registrationNumber
+        }
+
+        binding.textField2.setEndIconOnClickListener {
+            dispatchTakePictureIntent()
+            currentTextField = binding.chassisNumber
+        }
+
+        binding.textField3.setEndIconOnClickListener {
+            dispatchTakePictureIntent()
+            currentTextField = binding.engineNumber
         }
 
         binding.searchButton.setOnClickListener {
@@ -63,7 +79,6 @@ class HomeFragment : Fragment() {
 
     }
 
-
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try {
@@ -79,12 +94,26 @@ class HomeFragment : Fragment() {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             binding.imgViewer.setImageBitmap(imageBitmap)
             img = imageBitmap
-            val py = Python.getInstance()
-            val pyObj = py.getModule("script")
 
-            val obj = pyObj.callAttr("main", img)
+//            val py = Python.getInstance()
+//            val pyObj = py.getModule("script")
+//
+//            val obj = pyObj.callAttr("main", img)
+//
+//            Toast.makeText(requireContext(), "The result is : ${obj.toString()}", Toast.LENGTH_SHORT).show()
+            val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+            val image = InputImage.fromBitmap(imageBitmap, 0)
+            val result = recognizer.process(image)
+                .addOnSuccessListener { visionText ->
+                    Toast.makeText(requireContext(), visionText.text, Toast.LENGTH_LONG).show()
+                    currentTextField?.setText(visionText.text)
+                }
+                .addOnFailureListener { e ->
+                    // Task failed with an exception
+                    Toast.makeText(requireContext(), "$e", Toast.LENGTH_SHORT).show()
+                }
 
-            Toast.makeText(requireContext(), "The result is : ${obj.toString()}", Toast.LENGTH_SHORT).show()
+
         }
     }
 

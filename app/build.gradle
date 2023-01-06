@@ -26,13 +26,13 @@ android {
 
         python {
             version "3.8"
-//            buildPython "C:/Users/ASUS/AppData/Local/Programs/Python/Python310/python.exe"
+            buildPython "C:/Users/ASUS/AppData/Local/Programs/Python/Python310/python.exe"
 
-            pip{
+            pip {
                 install "numpy"
                 install "imutils"
-//                install "easyocr"
                 install "opencv-python"
+//                install "easyocr"
             }
         }
     }
@@ -86,4 +86,7 @@ dependencies {
     // Kotlin Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
+
+    // ML Kit
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.2'
 }

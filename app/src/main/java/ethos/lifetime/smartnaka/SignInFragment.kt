@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -116,10 +117,10 @@ class SignInFragment : Fragment() {
     }
 
     private fun checkUser() {
-        val firebaseUser = firebaseAuth.currentUser
-        if (firebaseUser != null) {
+//        val firebaseUser = firebaseAuth.currentUser
+//        if (firebaseUser != null) {
             findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToHomeFragment())
-        }
+//        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
