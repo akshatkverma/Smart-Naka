@@ -111,6 +111,7 @@
             android:id="@+id/img_viewer"
             android:layout_width="match_parent"
             android:layout_height="500dp"
+            android:visibility="gone"
             />
 
     </LinearLayout>
