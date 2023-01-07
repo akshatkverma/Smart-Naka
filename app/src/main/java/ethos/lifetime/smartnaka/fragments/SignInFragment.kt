@@ -59,6 +59,20 @@ class SignInFragment : Fragment() {
     private fun emailPasswordSignIn() {
         auth = Firebase.auth
 
+        binding.layoutLoginFile.forgotPasswordTV.setOnClickListener {
+
+        }
+
+        binding.layoutLoginFile.signUpTV.setOnClickListener {
+            binding.layoutLoginFile.layoutLoginFileRootElement.visibility = View.GONE
+            binding.layoutRegisterFile.layoutRegisterFileRootElement. visibility = View.VISIBLE
+        }
+
+        binding.layoutRegisterFile.signInTV.setOnClickListener {
+            binding.layoutLoginFile.layoutLoginFileRootElement.visibility = View.VISIBLE
+            binding.layoutRegisterFile.layoutRegisterFileRootElement. visibility = View.GONE
+        }
+
         binding.layoutLoginFile.loginButton.setOnClickListener {
             val email = binding.layoutLoginFile.email.text.toString().trim()
             val password = binding.layoutLoginFile.password.text.toString()

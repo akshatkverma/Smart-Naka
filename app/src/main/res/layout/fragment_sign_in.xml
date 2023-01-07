@@ -47,9 +47,15 @@
                     android:layout_gravity="center"
                     android:text="Smart Naka"
                     android:layout_marginTop="40dp"/>
+
                 <include
                     android:id="@+id/layout_login_file"
                     layout="@layout/layout_login"/>
+
+                <include
+                    android:id="@+id/layout_register_file"
+                    android:visibility="gone"
+                    layout="@layout/layout_register"/>
 
             </LinearLayout>
 
