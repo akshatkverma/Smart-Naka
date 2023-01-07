@@ -1,7 +1,8 @@
-package ethos.lifetime.smartnaka
+package ethos.lifetime.smartnaka.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ethos.lifetime.smartnaka.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package ethos.lifetime.smartnaka
+package ethos.lifetime.smartnaka.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +17,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import ethos.lifetime.smartnaka.R
 import ethos.lifetime.smartnaka.databinding.FragmentSignInBinding
 
 class SignInFragment : Fragment() {

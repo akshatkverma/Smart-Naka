@@ -1,4 +1,4 @@
-package ethos.lifetime.smartnaka
+package ethos.lifetime.smartnaka.dao
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore

@@ -1,4 +1,4 @@
-package ethos.lifetime.smartnaka
+package ethos.lifetime.smartnaka.fragments
 
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
+import ethos.lifetime.smartnaka.R
 import ethos.lifetime.smartnaka.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {

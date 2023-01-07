@@ -1,4 +1,4 @@
-package ethos.lifetime.smartnaka
+package ethos.lifetime.smartnaka.fragments
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import ethos.lifetime.smartnaka.dao.VehiclesDao
 import ethos.lifetime.smartnaka.databinding.FragmentSearchBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

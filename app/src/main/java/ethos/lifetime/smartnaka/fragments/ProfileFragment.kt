@@ -1,4 +1,4 @@
-package ethos.lifetime.smartnaka
+package ethos.lifetime.smartnaka.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
