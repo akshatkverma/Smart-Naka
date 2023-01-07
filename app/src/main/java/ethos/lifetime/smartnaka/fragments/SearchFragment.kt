@@ -106,6 +106,7 @@ class SearchFragment : Fragment() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             binding.imgViewer.visibility = View.VISIBLE
+            binding.capturedImageTV.visibility = View.VISIBLE
             binding.imgViewer.setImageBitmap(imageBitmap)
             img = imageBitmap
 

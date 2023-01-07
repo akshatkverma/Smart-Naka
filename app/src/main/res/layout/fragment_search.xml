@@ -17,10 +17,9 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textColor="@color/black"
-            android:text="Welcome to Smart Naka"
+            android:text="Enter any of the three details to search:"
             />
 
         <com.google.android.material.textfield.TextInputLayout
