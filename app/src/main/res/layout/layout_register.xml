@@ -22,65 +22,92 @@
             android:layout_marginTop="@dimen/loginViewsMargin"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top">
-            <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textInputRegisterName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            app:helperTextEnabled="true"
+            app:helperText="*required"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:id="@+id/registerName"
+                android:inputType="textPersonName"
                 android:maxLines="1"
-                android:hint="Name"/>
+                android:hint="@string/register_name_hint"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top">
-            <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textInputRegisterEmail"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            app:helperTextEnabled="true"
+            app:helperText="*required"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/registerEmail"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:hint="@string/login_email_hint"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top">
-            <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textInputRegisterPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="password_toggle"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            app:helperText="*required"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/registerPassword"
                 android:hint="@string/login_password_hint"
                 android:maxLines="1"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                />
+
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top">
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Re-enter Password"
-                android:maxLines="1"
-                android:inputType="textPassword"/>
-        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Register"
+            android:id="@+id/buttonRegister"
             android:backgroundTint="@color/primaryTextColor"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/loginViewsMargin" />
 
         <TextView
             android:id="@+id/signInTV"
-            style="@style/parent"
+            style="@style/viewParent"
             android:textAlignment="center"
             android:textStyle="bold"
             android:textColor="@color/primaryTextColor"
             android:text="@string/signup_login_hint"
-            android:layout_marginTop="@dimen/loginViewsMargin"/>
+            android:background="?attr/selectableItemBackground"
+            android:padding="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/signUpViewsMargin"/>
+
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

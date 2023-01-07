@@ -1,6 +1,7 @@
 package ethos.lifetime.smartnaka.fragments
 
 import android.content.Intent
+import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputLayout.EndIconMode
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -52,49 +55,41 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         emailPasswordSignIn()
+        forgotPassword()
         googleSignIn()
-
+        switchToSignUpPage()
+        switchToSignInPage()
+        emailPasswordSignUp()
     }
 
     private fun emailPasswordSignIn() {
         auth = Firebase.auth
 
-        binding.layoutLoginFile.forgotPasswordTV.setOnClickListener {
-
-        }
-
-        binding.layoutLoginFile.signUpTV.setOnClickListener {
-            binding.layoutLoginFile.layoutLoginFileRootElement.visibility = View.GONE
-            binding.layoutRegisterFile.layoutRegisterFileRootElement. visibility = View.VISIBLE
-        }
-
-        binding.layoutRegisterFile.signInTV.setOnClickListener {
-            binding.layoutLoginFile.layoutLoginFileRootElement.visibility = View.VISIBLE
-            binding.layoutRegisterFile.layoutRegisterFileRootElement. visibility = View.GONE
-        }
-
         binding.layoutLoginFile.loginButton.setOnClickListener {
-            val email = binding.layoutLoginFile.email.text.toString().trim()
-            val password = binding.layoutLoginFile.password.text.toString()
+            val email = binding.layoutLoginFile.loginEmail.text.toString().trim()
+            val password = binding.layoutLoginFile.loginPassword.text.toString()
 
             var fieldEmpty = false
 
             if (email == "") {
                 fieldEmpty = true
-                binding.layoutLoginFile.email.error = "Email field can't be empty"
+                binding.layoutLoginFile.textInputLoginEmail.error = "Email field can't be empty."
             } else {
-                binding.layoutLoginFile.email.error = null
+                binding.layoutLoginFile.textInputLoginEmail.error = null
             }
 
             if (password == "") {
                 fieldEmpty = true
-                binding.layoutLoginFile.password.error = "Password field can't be empty"
+                binding.layoutLoginFile.textInputLoginPassword.error = "Password field can't be empty."
             } else {
-                binding.layoutLoginFile.password.error = null
+                binding.layoutLoginFile.textInputLoginPassword.error = null
             }
 
             if (fieldEmpty)
                 return@setOnClickListener
+
+            binding.layoutLogin.visibility = View.GONE
+            binding.progressBar.visibility = View.VISIBLE
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity()) { task ->
@@ -108,6 +103,34 @@ class SignInFragment : Fragment() {
                         Toast.makeText(context, "Authentication failed.",
                             Toast.LENGTH_SHORT).show()
                         checkUser()
+                    }
+                }
+        }
+
+    }
+
+    private fun forgotPassword() {
+        binding.layoutLoginFile.forgotPasswordTV.setOnClickListener {
+            val email = binding.layoutLoginFile.loginEmail.text.toString()
+
+            binding.layoutLoginFile.textInputLoginPassword.error = null
+
+            if (email == "") {
+                binding.layoutLoginFile.textInputLoginEmail.error = "Email field can't be empty."
+                return@setOnClickListener
+            } else {
+                binding.layoutLoginFile.textInputLoginEmail.error = null
+            }
+
+            auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "Email sent.")
+                        Toast.makeText(context, "Password reset link has been sent to email.",
+                            Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Please check your email address.",
+                            Toast.LENGTH_SHORT).show()
                     }
                 }
         }
@@ -129,11 +152,81 @@ class SignInFragment : Fragment() {
         }
     }
 
+    private fun switchToSignUpPage() {
+        binding.layoutLoginFile.signUpTV.setOnClickListener {
+            binding.layoutLoginFile.layoutLoginFileRootElement.visibility = View.GONE
+            binding.layoutRegisterFile.layoutRegisterFileRootElement. visibility = View.VISIBLE
+        }
+    }
+
+    private fun switchToSignInPage() {
+        binding.layoutRegisterFile.signInTV.setOnClickListener {
+            binding.layoutLoginFile.layoutLoginFileRootElement.visibility = View.VISIBLE
+            binding.layoutRegisterFile.layoutRegisterFileRootElement. visibility = View.GONE
+        }
+    }
+
+    private fun emailPasswordSignUp() {
+        auth = Firebase.auth
+
+        binding.layoutRegisterFile.buttonRegister.setOnClickListener {
+            val name = binding.layoutRegisterFile.registerName.text.toString()
+            val email = binding.layoutRegisterFile.registerEmail.text.toString().trim()
+            val password = binding.layoutRegisterFile.registerPassword.text.toString()
+
+            var fieldEmpty = false
+
+            if (name == "") {
+                fieldEmpty = true
+                binding.layoutRegisterFile.textInputRegisterName.error = "Name field can't be empty."
+            } else {
+                binding.layoutRegisterFile.textInputRegisterName.error = null
+            }
+
+            if (email == "") {
+                fieldEmpty = true
+                binding.layoutRegisterFile.textInputRegisterEmail.error = "Email field can't be empty."
+            } else {
+                binding.layoutRegisterFile.textInputRegisterEmail.error = null
+            }
+
+            if (password == "") {
+                fieldEmpty = true
+                binding.layoutRegisterFile.textInputRegisterPassword.error = "Password field can't be empty."
+            } else {
+                binding.layoutRegisterFile.textInputRegisterPassword.error = null
+            }
+
+            if (fieldEmpty)
+                return@setOnClickListener
+
+            binding.layoutLogin.visibility = View.GONE
+            binding.progressBar.visibility = View.VISIBLE
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "createUserWithEmail:success")
+                        checkUser()
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                        Toast.makeText(context, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show()
+                        checkUser()
+                    }
+                }
+        }
+    }
 
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser
         if (firebaseUser != null) {
             findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToHomeFragment())
+        } else {
+            binding.layoutLogin.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.GONE
         }
     }
 
@@ -157,6 +250,10 @@ class SignInFragment : Fragment() {
         Log.d(TAG, "firebaseAuthWithGoogleAccount: begin")
         Toast.makeText(requireContext(), "starting in...", Toast.LENGTH_LONG).show()
         val credential = GoogleAuthProvider.getCredential(account!!.idToken, null)
+
+        binding.layoutLogin.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+
         firebaseAuth.signInWithCredential(credential)
             .addOnSuccessListener { authResult ->
                 Log.d(TAG, "firebaseAuthWithGoogleAccount: LoggedIn")

@@ -24,31 +24,44 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textInputEmail"
+            android:id="@+id/textInputLoginEmail"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_marginTop="@dimen/loginViewsMargin">
-            <EditText
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            app:helperTextEnabled="true"
+            app:helperText="*required"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/email"
+                android:id="@+id/loginEmail"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:hint="@string/login_email_hint"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textInputPassword"
+            android:id="@+id/textInputLoginPassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_marginTop="@dimen/loginViewsMargin">
-            <EditText
+            app:endIconMode="password_toggle"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            app:helperText="*required"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/password"
+                android:id="@+id/loginPassword"
                 android:hint="@string/login_password_hint"
                 android:maxLines="1"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -57,8 +70,10 @@
             android:text="Forgot Password?"
             android:textColor="@color/primaryTextColor"
             android:textSize="@dimen/newsMoreTextSize"
+            android:background="?attr/selectableItemBackground"
+            android:padding="2dp"
             android:layout_gravity="end"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="12dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/loginButton"
@@ -71,7 +86,7 @@
 
 
         <TextView
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Other Sign In Options : "
@@ -85,18 +100,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@null"
+            android:background="?android:selectableItemBackground"
             android:src="@drawable/common_google_signin_btn_icon_dark"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:layout_marginBottom="@dimen/loginViewsMargin"
             />
 
         <TextView
             android:id="@+id/signUpTV"
-            style="@style/parent"
+            style="@style/viewParent"
             android:textAlignment="center"
             android:textStyle="bold"
             android:textColor="@color/primaryTextColor"
             android:text="@string/login_signup_hint"
-            android:layout_marginTop="@dimen/loginViewsMargin"/>
+            android:background="?attr/selectableItemBackground"
+            android:padding="4dp"
+            android:layout_gravity="center" />
 
 
     </LinearLayout>
