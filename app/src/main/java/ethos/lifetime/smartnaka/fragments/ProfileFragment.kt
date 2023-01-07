@@ -1,5 +1,6 @@
 package ethos.lifetime.smartnaka.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import ethos.lifetime.smartnaka.R
+import ethos.lifetime.smartnaka.activities.SignInActivity
 import ethos.lifetime.smartnaka.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -49,8 +51,11 @@ class ProfileFragment : Fragment() {
 
         binding.signOutButton.setOnClickListener {
             mAuth.signOut()
-            googleSignInClient.signOut()
-//            findNavController().navigate()
+            googleSignInClient.signOut().addOnCompleteListener {
+                val signInActivityIntent = Intent(requireContext(), SignInActivity::class.java)
+                startActivity(signInActivityIntent)
+                requireActivity().finish()
+            }
         }
     }
 

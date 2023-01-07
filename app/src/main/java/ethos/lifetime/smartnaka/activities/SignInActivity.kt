@@ -1,33 +1,26 @@
-package ethos.lifetime.smartnaka.fragments
+package ethos.lifetime.smartnaka.activities
 
 import android.content.Intent
-import android.icu.lang.UCharacter.GraphemeClusterBreak.V
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textfield.TextInputLayout.EndIconMode
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import ethos.lifetime.smartnaka.R
-import ethos.lifetime.smartnaka.databinding.FragmentSignInBinding
+import ethos.lifetime.smartnaka.databinding.ActivitySignInBinding
 
-class SignInFragment : Fragment() {
+class SignInActivity : AppCompatActivity() {
 
-    private var _binding: FragmentSignInBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ActivitySignInBinding
 
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
@@ -38,21 +31,10 @@ class SignInFragment : Fragment() {
         private const val TAG = "GOOGLE_SIGN_IN_TAG"
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSignInBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        checkUser()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivitySignInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         emailPasswordSignIn()
         forgotPassword()
@@ -60,6 +42,12 @@ class SignInFragment : Fragment() {
         switchToSignUpPage()
         switchToSignInPage()
         emailPasswordSignUp()
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        checkUser()
     }
 
     private fun emailPasswordSignIn() {
@@ -92,7 +80,7 @@ class SignInFragment : Fragment() {
             binding.progressBar.visibility = View.VISIBLE
 
             auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity()) { task ->
+                .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
@@ -100,7 +88,7 @@ class SignInFragment : Fragment() {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
-                        Toast.makeText(context, "Authentication failed.",
+                        Toast.makeText(this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show()
                         checkUser()
                     }
@@ -126,10 +114,10 @@ class SignInFragment : Fragment() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "Email sent.")
-                        Toast.makeText(context, "Password reset link has been sent to email.",
+                        Toast.makeText(this, "Password reset link has been sent to email.",
                             Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(context, "Please check your email address.",
+                        Toast.makeText(this, "Please check your email address.",
                             Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -141,7 +129,7 @@ class SignInFragment : Fragment() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(requireContext(), googleSignInOptions)
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
 
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -204,7 +192,7 @@ class SignInFragment : Fragment() {
             binding.progressBar.visibility = View.VISIBLE
 
             auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity()) { task ->
+                .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success")
@@ -212,7 +200,7 @@ class SignInFragment : Fragment() {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                        Toast.makeText(context, "Authentication failed.",
+                        Toast.makeText(this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show()
                         checkUser()
                     }
@@ -223,7 +211,9 @@ class SignInFragment : Fragment() {
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser
         if (firebaseUser != null) {
-            findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToHomeFragment())
+            val mainActivityIntent = Intent(this, MainActivity::class.java)
+            startActivity(mainActivityIntent)
+            finish()
         } else {
             binding.layoutLogin.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
@@ -240,7 +230,7 @@ class SignInFragment : Fragment() {
                 firebaseAuthWithGoogleAccount(account)
             } catch (e: Exception) {
                 Log.d(TAG, "onActivityResult:${e.message}")
-                Toast.makeText(requireContext(), "${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "${e.message}", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -248,7 +238,7 @@ class SignInFragment : Fragment() {
 
     private fun firebaseAuthWithGoogleAccount(account: GoogleSignInAccount?) {
         Log.d(TAG, "firebaseAuthWithGoogleAccount: begin")
-        Toast.makeText(requireContext(), "starting in...", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "starting in...", Toast.LENGTH_LONG).show()
         val credential = GoogleAuthProvider.getCredential(account!!.idToken, null)
 
         binding.layoutLogin.visibility = View.GONE
@@ -267,17 +257,16 @@ class SignInFragment : Fragment() {
                 Log.d(TAG, "firebaseAuthWithGoogleAccount: Email: ${email}")
                 if (authResult.additionalUserInfo!!.isNewUser) {
                     Log.d(TAG, "firebaseAuthWithGoogleAccount: Account created")
-                    Toast.makeText(requireContext(), "logged in...", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "logged in...", Toast.LENGTH_LONG).show()
                 } else {
                     Log.d(TAG, "firebaseAuthWithGoogleAccount: Existing user")
-                    Toast.makeText(requireContext(), "logged in...", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "logged in...", Toast.LENGTH_LONG).show()
                 }
                 checkUser()
             }
             .addOnFailureListener { e ->
                 Log.d(TAG, "firebaseAuthWithGoogleAccount: Login Failed")
-                Toast.makeText(requireContext(), "Login Failed...", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Login Failed...", Toast.LENGTH_LONG).show()
             }
     }
-
 }
