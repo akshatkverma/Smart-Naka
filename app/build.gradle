@@ -26,7 +26,7 @@ android {
 
         python {
             version "3.8"
-            buildPython "C:/Users/ASUS/AppData/Local/Programs/Python/Python310/python.exe"
+//            buildPython "C:/Users/ASUS/AppData/Local/Programs/Python/Python310/python.exe"
 
             pip {
                 install "numpy"
@@ -67,6 +67,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.8.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
