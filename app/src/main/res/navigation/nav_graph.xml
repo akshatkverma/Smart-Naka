@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="ethos.lifetime.smartnaka.SignInFragment"
+        android:name="ethos.lifetime.smartnaka.fragments.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="ethos.lifetime.smartnaka.HomeFragment"
+        android:name="ethos.lifetime.smartnaka.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="ethos.lifetime.smartnaka.ProfileFragment"
+        android:name="ethos.lifetime.smartnaka.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
