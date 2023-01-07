@@ -27,6 +27,8 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setToolBar()
+
         val searchFragment = SearchFragment()
         val profileFragment = ProfileFragment()
 
@@ -46,4 +48,14 @@ class HomeFragment : Fragment() {
             replace(R.id.flFragment, fragment)
             commit()
         }
+
+    private fun setToolBar() {
+        val toolbar = binding.toolbarHomeFragment
+        toolbar.toolbarTitle.text = "Smart Naka"
+        toolbar.toolbarSubtitle.visibility = View.GONE
+        toolbar.backButton.visibility = View.INVISIBLE
+        toolbar.deleteButton.visibility = View.INVISIBLE
+        toolbar.openBrowser.visibility = View.INVISIBLE
+        toolbar.addButton.visibility = View.INVISIBLE
+    }
 }

@@ -1,64 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="15dp"
+    android:orientation="vertical"
+    style="@style/loginParent"
     tools:context=".fragments.SignInFragment">
+    <ScrollView
+        style="@style/parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        <RelativeLayout
+            style="@style/parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login Page"
-            android:textStyle="bold"
-            android:textSize="40sp"
-            android:layout_gravity="center" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:hint="E-mail"
-            android:layout_margin="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp" />
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:weightSum="12">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <LinearLayout
+                    style="@style/parent"
+                    android:background="@drawable/login_shape_bk"
+                    android:orientation="vertical"
+                    android:layout_weight="3">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:hint="Password"
-            android:layout_margin="8dp">
+                    <ImageView
+                        style="@style/parent"
+                        android:background="@drawable/ic_login_bk"
+                        android:contentDescription="login background" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp" />
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/loginButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Log-In"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center" />
+                <TextView
+                    style="@style/headerText"
+                    android:layout_gravity="center"
+                    android:text="Smart Naka"
+                    android:layout_marginTop="40dp"/>
+                <include
+                    android:id="@+id/layout_login_file"
+                    layout="@layout/layout_login"/>
 
-        <ImageButton
-            android:layout_marginTop="45dp"
-            android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/common_google_signin_btn_icon_dark" />
-    </LinearLayout>
-</ScrollView>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

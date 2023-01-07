@@ -14,7 +14,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -60,24 +59,24 @@ class SignInFragment : Fragment() {
     private fun emailPasswordSignIn() {
         auth = Firebase.auth
 
-        binding.loginButton.setOnClickListener {
-            val email = binding.email.text.toString().trim()
-            val password = binding.password.text.toString()
+        binding.layoutLoginFile.loginButton.setOnClickListener {
+            val email = binding.layoutLoginFile.email.text.toString().trim()
+            val password = binding.layoutLoginFile.password.text.toString()
 
             var fieldEmpty = false
 
             if (email == "") {
                 fieldEmpty = true
-                binding.email.error = "Email field can't be empty"
+                binding.layoutLoginFile.email.error = "Email field can't be empty"
             } else {
-                binding.email.error = null
+                binding.layoutLoginFile.email.error = null
             }
 
             if (password == "") {
                 fieldEmpty = true
-                binding.password.error = "Password field can't be empty"
+                binding.layoutLoginFile.password.error = "Password field can't be empty"
             } else {
-                binding.password.error = null
+                binding.layoutLoginFile.password.error = null
             }
 
             if (fieldEmpty)
@@ -109,7 +108,7 @@ class SignInFragment : Fragment() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        binding.image.setOnClickListener {
+        binding.layoutLoginFile.googleSignInImage.setOnClickListener {
             Log.d(TAG, "Begin SignIn")
             val intent = googleSignInClient.signInIntent
             startActivityForResult(intent, RC_SIGN_IN)
