@@ -3,10 +3,13 @@ package ethos.lifetime.smartnaka.fragments
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.location.Location
 import android.media.ExifInterface
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -14,16 +17,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import ethos.lifetime.smartnaka.dao.VehiclesDao
 import ethos.lifetime.smartnaka.databinding.FragmentSearchBinding
+import ethos.lifetime.smartnaka.models.VehicleLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -41,6 +51,9 @@ class SearchFragment : Fragment() {
     private var img: Bitmap? = null
     private var currentTextField: TextInputEditText? = null
     private var imageFileLocation = ""
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var latitude: String
+    private lateinit var longitude: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +63,14 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fusedLocationProviderClient=LocationServices.getFusedLocationProviderClient(requireContext())
+        fetchLocation()
+
+
+
         binding.layoutSearchFile.textField1.setEndIconOnClickListener {
             dispatchTakePictureIntent()
             currentTextField = binding.layoutSearchFile.registrationNumber
@@ -101,14 +120,42 @@ class SearchFragment : Fragment() {
         }
 
     }
+
+    private fun fetchLocation(){
+        //val task: Task<Location> =fusedLocationProviderClient.lastLocation
+        if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this.requireActivity(),
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                101
+            )
+            // return task
+
+        }
+        fusedLocationProviderClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                latitude =  location?.latitude.toString()
+                longitude = location?.longitude.toString()
+            }
+
+    }
+
     private fun isEngineNumber(value: String):Boolean{
         return (value.length==6)&&(value.all{char->char.isDigit()})
     }
     private fun isChasisNumber(value: String):Boolean{
         return (value.length==17)
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getdao(regNumber: String, chassisNum:String, engineNum:String){
         val dao = VehiclesDao()
+        val currentUid=FirebaseAuth.getInstance().currentUser!!.uid
+        //val gpsTracker = GPSTracker(requireContext())
+        //val task: String=fetchLocation()
+        dao.addLog(currentUid, VehicleLog(chassisNum, Calendar.getInstance().time.toString(),engineNum,latitude, longitude, regNumber
+        ))
 
         GlobalScope.launch(Dispatchers.IO) {
             if (dao.checkVehicle(regNumber, chassisNum, engineNum)) {

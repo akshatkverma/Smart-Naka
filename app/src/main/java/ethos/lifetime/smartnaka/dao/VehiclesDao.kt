@@ -3,16 +3,18 @@ package ethos.lifetime.smartnaka.dao
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import ethos.lifetime.smartnaka.models.User
+import ethos.lifetime.smartnaka.models.VehicleLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 import kotlinx.coroutines.tasks.await
 
 class VehiclesDao {
 
     private val dataBase = FirebaseFirestore.getInstance()
     private val vehicleCollection = dataBase.collection("stolenVehicles")
-
+    private val logs=dataBase.collection("logs")
     private val userCollection = dataBase.collection("users")
 
     fun addUser(user: User) {
@@ -39,6 +41,23 @@ class VehiclesDao {
             .addOnFailureListener { exception ->
                 Log.d("Firebase", "get failed with ", exception)
             }
+    }
+
+    public fun addLog(uid: String, log: VehicleLog){
+        val docRef = userCollection.document(uid)
+        var user = User()
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d("Firebase", "DocumentSnapshot data: ${document.data}")
+                    user = document.toObject(User::class.java)!!
+                    user.logs.add(log)
+                    addUser(user)
+                } else {
+                    Log.d("Firebase", "No such document")
+                }
+            }
+
     }
 
     suspend fun checkVehicle(

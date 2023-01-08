@@ -5,5 +5,5 @@ data class User(
     var name: String = "",
     val email: String = "",
     var photoUrl: String = "",
-    var logs: Array<Log> = arrayOf()
+    var logs: MutableList<VehicleLog> = mutableListOf()
 )

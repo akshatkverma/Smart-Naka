@@ -1,6 +1,6 @@
 package ethos.lifetime.smartnaka.models
 
-data class Log(
+data class VehicleLog(
     var chassisNumber:String="",
     var dateAndTime: String="",
     var engineNumber: String="",
