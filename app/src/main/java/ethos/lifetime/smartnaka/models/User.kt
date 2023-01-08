@@ -4,5 +4,6 @@ data class User(
     val uid: String = "",
     var name: String = "",
     val email: String = "",
-    var photoUrl: String = ""
+    var photoUrl: String = "",
+    var logs: Array<Log> = arrayOf()
 )
