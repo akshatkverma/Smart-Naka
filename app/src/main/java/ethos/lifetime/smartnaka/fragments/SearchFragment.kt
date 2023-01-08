@@ -68,44 +68,68 @@ class SearchFragment : Fragment() {
         }
 
         binding.layoutSearchFile.searchButton.setOnClickListener {
-            binding.layoutSearchFile.firebaseProgressBar.visibility = View.VISIBLE
-            binding.layoutSearchFile.searchButton.visibility = View.GONE
+
+
 
             val regNumber = binding.layoutSearchFile.registrationNumber.text.toString()
             val engineNum = binding.layoutSearchFile.engineNumber.text.toString()
             val chassisNum = binding.layoutSearchFile.chassisNumber.text.toString()
-            if (!isRegistrationNumber(regNumber)) {
-                binding.layoutSearchFile.textField1.error = "Input registration number is invalid"
+
+            if(isRegistrationNumber(regNumber)||isEngineNumber(engineNum)||isChasisNumber(chassisNum)){
+                binding.layoutSearchFile.textField2.error=null
+                binding.layoutSearchFile.textField3.error=null
+                binding.layoutSearchFile.textField1.error=null
+                binding.layoutSearchFile.firebaseProgressBar.visibility = View.VISIBLE
+                binding.layoutSearchFile.searchButton.visibility = View.GONE
+                getdao(regNumber, chassisNum, engineNum)
+
+            }
+            else{
+                binding.layoutSearchFile.textField2.error="Invalid input for Chassis Number"
+                binding.layoutSearchFile.textField3.error="Invalid input for Engine Number"
+                binding.layoutSearchFile.textField1.error="Invalid input for Registration Number"
+                //return@setOnClickListener
             }
 
-            val dao = VehiclesDao()
 
-            GlobalScope.launch(Dispatchers.IO) {
-                if (dao.checkVehicle(regNumber, chassisNum, engineNum)) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Vehicle is Stolen !!", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            context,
-                            "Vehicle not found in database.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
 
-                withContext(Dispatchers.Main) {
-                    binding.layoutSearchFile.firebaseProgressBar.visibility = View.GONE
-                    binding.layoutSearchFile.searchButton.visibility = View.VISIBLE
-                }
-            }
+
         }
 
         if (!Python.isStarted()) {
             Python.start(AndroidPlatform(requireContext()))
         }
 
+    }
+    private fun isEngineNumber(value: String):Boolean{
+        return (value.length==6)&&(value.all{char->char.isDigit()})
+    }
+    private fun isChasisNumber(value: String):Boolean{
+        return (value.length==17)
+    }
+    private fun getdao(regNumber: String, chassisNum:String, engineNum:String){
+        val dao = VehiclesDao()
+
+        GlobalScope.launch(Dispatchers.IO) {
+            if (dao.checkVehicle(regNumber, chassisNum, engineNum)) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Vehicle is Stolen !!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        context,
+                        "Vehicle not found in database.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            withContext(Dispatchers.Main) {
+                binding.layoutSearchFile.firebaseProgressBar.visibility = View.GONE
+                binding.layoutSearchFile.searchButton.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun dispatchTakePictureIntent() {

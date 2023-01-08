@@ -29,10 +29,10 @@ android {
 //            buildPython "C:/Users/ASUS/AppData/Local/Programs/Python/Python310/python.exe"
 
             pip {
-//                install "numpy"
-//                install "imutils"
-//                install "opencv-python"
-//                install "easyocr"
+                install "numpy"
+                install "imutils"
+                install "opencv-python"
+                //install "easyocr"
             }
         }
     }
