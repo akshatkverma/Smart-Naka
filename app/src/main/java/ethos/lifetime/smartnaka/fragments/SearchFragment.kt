@@ -4,12 +4,17 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
@@ -23,14 +28,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val REQUEST_IMAGE_CAPTURE = 1
-    private var img : Bitmap? = null
-    private var currentTextField : TextInputEditText? = null
+    private var img: Bitmap? = null
+    private var currentTextField: TextInputEditText? = null
+    private var imageFileLocation = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,22 +74,24 @@ class SearchFragment : Fragment() {
             val regNumber = binding.layoutSearchFile.registrationNumber.text.toString()
             val engineNum = binding.layoutSearchFile.engineNumber.text.toString()
             val chassisNum = binding.layoutSearchFile.chassisNumber.text.toString()
-            if(!isRegistrationNumber(regNumber))
-            {
-                binding.layoutSearchFile.textField1.error="Input registration number is invalid"
+            if (!isRegistrationNumber(regNumber)) {
+                binding.layoutSearchFile.textField1.error = "Input registration number is invalid"
             }
 
             val dao = VehiclesDao()
 
-            GlobalScope.launch (Dispatchers.IO){
-                if(dao.checkVehicle(regNumber, chassisNum, engineNum)) {
+            GlobalScope.launch(Dispatchers.IO) {
+                if (dao.checkVehicle(regNumber, chassisNum, engineNum)) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(context, "Vehicle is Stolen !!", Toast.LENGTH_SHORT).show()
                     }
-                }
-                else {
+                } else {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Vehicle not found in database.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Vehicle not found in database.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -90,7 +102,7 @@ class SearchFragment : Fragment() {
             }
         }
 
-        if(!Python.isStarted()) {
+        if (!Python.isStarted()) {
             Python.start(AndroidPlatform(requireContext()))
         }
 
@@ -98,37 +110,34 @@ class SearchFragment : Fragment() {
 
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        var photoFile: File? = null
+        try {
+            photoFile = createImageFile()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        takePictureIntent.putExtra(
+            MediaStore.EXTRA_OUTPUT,
+            FileProvider.getUriForFile(
+                requireContext(), context?.applicationContext?.packageName
+                        + ".provider", createImageFile()
+            )
+        )
+
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(requireContext(), "Error Occured : $e", Toast.LENGTH_LONG).show()
         }
     }
-    private fun isRegistrationNumber(text: String) :Boolean
-    {
-        /*
-* wb 72 C 4543
-* wb 72 ch 2455
-* 01 23 45 6789
-* */
-        var temp = mutableListOf<Char>()
-        for( char in text){
-            if(char!='-'&&char!=' ') temp.add(char)
-        }
-        val size=temp.size
-        if(size>8 && size<12){
-            if(!temp[0].isDigit()&&!temp[1].isDigit()&&temp[2].isDigit()&&temp[3].isDigit()&&!temp[4].isDigit()&&temp[size-1].isDigit()&&temp[size-2].isDigit()&&temp[size-3].isDigit()&&temp[size-4].isDigit()) return true
-        }
-        return false
-    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-//            binding.searchVehicleConstraint.imgViewer.visibility = View.VISIBLE
-//            binding.capturedImageTV.visibility = View.VISIBLE
-//            binding.imgViewer.setImageBitmap(imageBitmap)
-            img = imageBitmap
+            var imageBitmap = BitmapFactory.decodeFile(imageFileLocation)
+            imageBitmap = rotateImage(imageBitmap)
+//            img = imageBitmap
 
 //            val py = Python.getInstance()
 //            val pyObj = py.getModule("script")
@@ -142,7 +151,6 @@ class SearchFragment : Fragment() {
                 .addOnSuccessListener { visionText ->
                     Toast.makeText(requireContext(), visionText.text, Toast.LENGTH_LONG).show()
                     currentTextField?.setText(visionText.text)
-
                 }
                 .addOnFailureListener { e ->
                     // Task failed with an exception
@@ -151,5 +159,52 @@ class SearchFragment : Fragment() {
 
 
         }
+    }
+
+    private fun createImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val imageFileName = "IMG_$timeStamp"
+        val storageDirectory =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+        val image = File.createTempFile(imageFileName, ".jpg", storageDirectory)
+        imageFileLocation = image.absolutePath
+        return image
+    }
+
+    private fun rotateImage(bitmap: Bitmap): Bitmap {
+        var exifInterface: ExifInterface? = null
+        try {
+            exifInterface = ExifInterface(imageFileLocation)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        val orientation =
+            exifInterface?.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED
+            )
+
+        val matrix = Matrix()
+
+        when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.setRotate(90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.setRotate(180f)
+        }
+
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
+    private fun isRegistrationNumber(text: String): Boolean {
+        val temp = mutableListOf<Char>()
+        for (char in text) {
+            if (char != '-' && char != ' ') temp.add(char)
+        }
+        val size = temp.size
+        if (size in 9..11) {
+            if (!temp[0].isDigit() && !temp[1].isDigit() && temp[2].isDigit() && temp[3].isDigit() && !temp[4].isDigit() && temp[size - 1].isDigit() && temp[size - 2].isDigit() && temp[size - 3].isDigit() && temp[size - 4].isDigit()) return true
+        }
+        return false
     }
 }
