@@ -13,15 +13,32 @@ class VehiclesDao {
     private val dataBase = FirebaseFirestore.getInstance()
     private val vehicleCollection = dataBase.collection("stolenVehicles")
 
-    private val userCollection=dataBase.collection("users")
+    private val userCollection = dataBase.collection("users")
 
-    fun addUser(user: User)
-    {
+    fun addUser(user: User) {
         user.let {
             GlobalScope.launch(Dispatchers.IO) {
                 userCollection.document(user.uid).set(it)
             }
         }
+    }
+
+    fun getUser(uid:String, callback:(User) -> Unit) {
+        val docRef = userCollection.document(uid)
+        var user = User()
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d("Firebase", "DocumentSnapshot data: ${document.data}")
+                    user = document.toObject(User::class.java)!!
+                    callback(user)
+                } else {
+                    Log.d("Firebase", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("Firebase", "get failed with ", exception)
+            }
     }
 
     suspend fun checkVehicle(
@@ -85,8 +102,6 @@ class VehiclesDao {
         Log.w("Firebase", "Reached flag 3")
         return currentVal
     }
-
-
 
 
 }

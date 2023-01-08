@@ -13,6 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import ethos.lifetime.smartnaka.R
 import ethos.lifetime.smartnaka.activities.SignInActivity
+import ethos.lifetime.smartnaka.dao.VehiclesDao
 import ethos.lifetime.smartnaka.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -34,6 +35,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.profileSectionSV.visibility = View.GONE
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -42,12 +45,18 @@ class ProfileFragment : Fragment() {
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
         mAuth = FirebaseAuth.getInstance()
-        val currentUser = mAuth.currentUser
+        val currentUser = mAuth.currentUser !!
 
-        binding.nameTV.text = currentUser?.displayName
-        binding.emailTV.text = currentUser?.email
+        val dao = VehiclesDao()
 
-        Glide.with(requireContext()).load(currentUser?.photoUrl).into(binding.ivProfilePicture)
+        dao.getUser(currentUser.uid) { user ->
+            binding.profileProgressBar.visibility = View.GONE
+            binding.profileSectionSV.visibility = View.VISIBLE
+
+            binding.nameTV.text = user.name
+            binding.emailTV.text = user.email
+            Glide.with(requireContext()).load(user.photoUrl).into(binding.ivProfilePicture)
+        }
 
         binding.signOutButton.setOnClickListener {
             mAuth.signOut()
