@@ -64,6 +64,10 @@ class SearchFragment : Fragment() {
             val regNumber = binding.layoutSearchFile.registrationNumber.text.toString()
             val engineNum = binding.layoutSearchFile.engineNumber.text.toString()
             val chassisNum = binding.layoutSearchFile.chassisNumber.text.toString()
+            if(!isRegistrationNumber(regNumber))
+            {
+                binding.layoutSearchFile.textField1.error="Input registration number is invalid"
+            }
 
             val dao = VehiclesDao()
 
@@ -100,7 +104,23 @@ class SearchFragment : Fragment() {
             Toast.makeText(requireContext(), "Error Occured : $e", Toast.LENGTH_LONG).show()
         }
     }
-
+    private fun isRegistrationNumber(text: String) :Boolean
+    {
+        /*
+* wb 72 C 4543
+* wb 72 ch 2455
+* 01 23 45 6789
+* */
+        var temp = mutableListOf<Char>()
+        for( char in text){
+            if(char!='-'&&char!=' ') temp.add(char)
+        }
+        val size=temp.size
+        if(size>8 && size<12){
+            if(!temp[0].isDigit()&&!temp[1].isDigit()&&temp[2].isDigit()&&temp[3].isDigit()&&!temp[4].isDigit()&&temp[size-1].isDigit()&&temp[size-2].isDigit()&&temp[size-3].isDigit()&&temp[size-4].isDigit()) return true
+        }
+        return false
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
@@ -122,6 +142,7 @@ class SearchFragment : Fragment() {
                 .addOnSuccessListener { visionText ->
                     Toast.makeText(requireContext(), visionText.text, Toast.LENGTH_LONG).show()
                     currentTextField?.setText(visionText.text)
+
                 }
                 .addOnFailureListener { e ->
                     // Task failed with an exception

@@ -28,6 +28,8 @@
             app:endIconDrawable="@drawable/ic_camera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="Registration Number">
 
@@ -48,6 +50,8 @@
             android:layout_height="wrap_content"
             app:endIconMode="custom"
             app:endIconDrawable="@drawable/ic_camera"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null"
             android:hint="Chassis Number">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -66,7 +70,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:endIconMode="custom"
+            app:errorEnabled="true"
             app:endIconDrawable="@drawable/ic_camera"
+            app:errorIconDrawable="@null"
             android:hint="Engine Number">
 
             <com.google.android.material.textfield.TextInputEditText
