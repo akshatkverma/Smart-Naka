@@ -3,35 +3,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="15dp"
     tools:context=".ProfileFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/profileHeading"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
             android:text="Profile Section"
-            android:layout_gravity="center"
+            android:textAlignment="center"
             android:textSize="35sp"
             android:textStyle="bold" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivProfilePicture"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_profile"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center" />
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profileHeading"
+            app:shapeAppearanceOverlay="@style/ImageView.Circle" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivProfilePictureEdit"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/edit_profile_icon_background"
+            android:padding="2dp"
+            android:src="@drawable/ic_outline_edit_24"
+            app:layout_constraintBottom_toBottomOf="@id/ivProfilePicture"
+            app:layout_constraintEnd_toEndOf="@id/ivProfilePicture" />
+
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:id="@+id/img"-->
+<!--            android:src="@drawable/ic_profile"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:layout_gravity="center" />-->
 
         <LinearLayout
-            android:layout_marginTop="35dp"
+            android:id="@+id/profileName"
+            android:layout_marginTop="36dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/ivProfilePicture">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,10 +76,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="25dp"
+            android:id="@+id/profileEmail"
+            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/profileName">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,12 +99,14 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/signOutButton"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign Out"
-            android:layout_gravity="center" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profileEmail"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

@@ -47,7 +47,7 @@ class ProfileFragment : Fragment() {
         binding.nameTV.text = currentUser?.displayName
         binding.emailTV.text = currentUser?.email
 
-        Glide.with(requireContext()).load(currentUser?.photoUrl).into(binding.img)
+        Glide.with(requireContext()).load(currentUser?.photoUrl).into(binding.ivProfilePicture)
 
         binding.signOutButton.setOnClickListener {
             mAuth.signOut()
