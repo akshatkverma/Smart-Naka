@@ -52,9 +52,9 @@ class ProfileFragment : Fragment() {
         dao.getUser(currentUser.uid) { user ->
             binding.profileProgressBar.visibility = View.GONE
             binding.profileSectionSV.visibility = View.VISIBLE
+            binding.nameTV.text = "Name : ${user.name}"
+            binding.emailTV.text = "E-mail : ${user.email}"
 
-            binding.nameTV.text = user.name
-            binding.emailTV.text = user.email
             Glide.with(requireContext()).load(user.photoUrl).into(binding.ivProfilePicture)
         }
 
