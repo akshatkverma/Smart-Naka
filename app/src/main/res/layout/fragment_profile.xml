@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="15dp"
-    tools:context=".ProfileFragment">
+    android:padding="16dp"
+    tools:context="fragments.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,8 +24,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProfilePicture"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
+            android:layout_width="144dp"
+            android:layout_height="144dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_profile"
             android:layout_marginTop="32dp"
@@ -36,8 +36,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivProfilePictureEdit"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginEnd="12dp"
             android:background="@drawable/edit_profile_icon_background"
             android:padding="2dp"

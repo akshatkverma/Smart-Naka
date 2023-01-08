@@ -2,12 +2,27 @@ package ethos.lifetime.smartnaka.dao
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import ethos.lifetime.smartnaka.models.User
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class VehiclesDao {
 
     private val dataBase = FirebaseFirestore.getInstance()
     private val vehicleCollection = dataBase.collection("stolenVehicles")
+
+    private val userCollection=dataBase.collection("users")
+
+    fun addUser(user: User)
+    {
+        user.let {
+            GlobalScope.launch(Dispatchers.IO) {
+                userCollection.document(user.uid).set(it)
+            }
+        }
+    }
 
     suspend fun checkVehicle(
         registrationNumber: String,
@@ -70,4 +85,8 @@ class VehiclesDao {
         Log.w("Firebase", "Reached flag 3")
         return currentVal
     }
+
+
+
+
 }

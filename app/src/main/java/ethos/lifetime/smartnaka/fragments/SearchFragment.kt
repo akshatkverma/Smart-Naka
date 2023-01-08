@@ -42,28 +42,28 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.textField1.setEndIconOnClickListener {
+        binding.layoutSearchFile.textField1.setEndIconOnClickListener {
             dispatchTakePictureIntent()
-            currentTextField = binding.registrationNumber
+            currentTextField = binding.layoutSearchFile.registrationNumber
         }
 
-        binding.textField2.setEndIconOnClickListener {
+        binding.layoutSearchFile.textField2.setEndIconOnClickListener {
             dispatchTakePictureIntent()
-            currentTextField = binding.chassisNumber
+            currentTextField = binding.layoutSearchFile.chassisNumber
         }
 
-        binding.textField3.setEndIconOnClickListener {
+        binding.layoutSearchFile.textField3.setEndIconOnClickListener {
             dispatchTakePictureIntent()
-            currentTextField = binding.engineNumber
+            currentTextField = binding.layoutSearchFile.engineNumber
         }
 
-        binding.searchButton.setOnClickListener {
-            binding.firebaseProgressBar.visibility = View.VISIBLE
-            binding.searchButton.visibility = View.GONE
+        binding.layoutSearchFile.searchButton.setOnClickListener {
+            binding.layoutSearchFile.firebaseProgressBar.visibility = View.VISIBLE
+            binding.layoutSearchFile.searchButton.visibility = View.GONE
 
-            val regNumber = binding.registrationNumber.text.toString()
-            val engineNum = binding.engineNumber.text.toString()
-            val chassisNum = binding.chassisNumber.text.toString()
+            val regNumber = binding.layoutSearchFile.registrationNumber.text.toString()
+            val engineNum = binding.layoutSearchFile.engineNumber.text.toString()
+            val chassisNum = binding.layoutSearchFile.chassisNumber.text.toString()
 
             val dao = VehiclesDao()
 
@@ -80,8 +80,8 @@ class SearchFragment : Fragment() {
                 }
 
                 withContext(Dispatchers.Main) {
-                    binding.firebaseProgressBar.visibility = View.GONE
-                    binding.searchButton.visibility = View.VISIBLE
+                    binding.layoutSearchFile.firebaseProgressBar.visibility = View.GONE
+                    binding.layoutSearchFile.searchButton.visibility = View.VISIBLE
                 }
             }
         }
@@ -105,9 +105,9 @@ class SearchFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
-            binding.imgViewer.visibility = View.VISIBLE
-            binding.capturedImageTV.visibility = View.VISIBLE
-            binding.imgViewer.setImageBitmap(imageBitmap)
+//            binding.searchVehicleConstraint.imgViewer.visibility = View.VISIBLE
+//            binding.capturedImageTV.visibility = View.VISIBLE
+//            binding.imgViewer.setImageBitmap(imageBitmap)
             img = imageBitmap
 
 //            val py = Python.getInstance()

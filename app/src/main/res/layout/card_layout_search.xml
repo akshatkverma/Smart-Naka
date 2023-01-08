@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/layout_register_file_rootElement"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/loginCard"
+    app:cardCornerRadius="@dimen/loginCardRadius"
+    android:elevation="5dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="@dimen/loginViewsMargin"
+    android:layout_marginBottom="@dimen/loginViewsMargin"
+    android:background="@color/whiteCardColor">
+
+    <LinearLayout
+        style="@style/linearParent"
+        android:layout_gravity="center"
+        android:padding="@dimen/loginViewsMargin">
+
+        <TextView
+            style="@style/headerTextPrimary"
+            android:text="SEARCH FOR VEHICLE"
+            android:layout_marginTop="@dimen/loginViewsMargin"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="20dp"
+            android:id="@+id/textField1"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Registration Number">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registrationNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField2"
+            android:layout_marginTop="20dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_camera"
+            android:hint="Chassis Number">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/chassisNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField3"
+            android:layout_marginTop="20dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_camera"
+            android:hint="Engine Number">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/engineNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="20dp"
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search Vehicle"
+            android:layout_gravity="center"
+            />
+
+        <ProgressBar
+            android:layout_marginTop="20dp"
+            android:id="@+id/firebaseProgressBar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/capturedImageTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Captured Image:"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="gone"
+            />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/img_viewer"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
