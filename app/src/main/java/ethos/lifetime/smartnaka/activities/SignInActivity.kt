@@ -245,7 +245,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun firebaseAuthWithGoogleAccount(account: GoogleSignInAccount?) {
         Log.d(TAG, "firebaseAuthWithGoogleAccount: begin")
-        Toast.makeText(this, "starting in...", Toast.LENGTH_LONG).show()
+//        Toast.makeText(this, "starting in...", Toast.LENGTH_LONG).show()
         val credential = GoogleAuthProvider.getCredential(account!!.idToken, null)
 
         binding.layoutLogin.visibility = View.GONE
@@ -264,7 +264,7 @@ class SignInActivity : AppCompatActivity() {
                 Log.d(TAG, "firebaseAuthWithGoogleAccount: Email: ${email}")
                 if (authResult.additionalUserInfo!!.isNewUser) {
                     Log.d(TAG, "firebaseAuthWithGoogleAccount: Account created")
-                    Toast.makeText(this, "logged in...", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(this, "logged in...", Toast.LENGTH_LONG).show()
                     val dao = VehiclesDao()
                     dao.addUser(User(firebaseUser.uid, firebaseUser.displayName.toString(), firebaseUser.email.toString(), firebaseUser.photoUrl.toString()))
                 } else {

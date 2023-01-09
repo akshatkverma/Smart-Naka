@@ -52,10 +52,14 @@ class ProfileFragment : Fragment() {
         dao.getUser(currentUser.uid) { user ->
             binding.profileProgressBar.visibility = View.GONE
             binding.profileSectionSV.visibility = View.VISIBLE
-            binding.nameTV.text = "Name : ${user.name}"
-            binding.emailTV.text = "E-mail : ${user.email}"
 
-            Glide.with(requireContext()).load(user.photoUrl).into(binding.ivProfilePicture)
+            binding.nameTV.text = user.name
+            binding.emailTV.text = user.email
+
+            if(user.photoUrl != "")
+                Glide.with(requireContext()).load(user.photoUrl).into(binding.ivProfilePicture)
+            else
+                binding.ivProfilePicture.setImageResource(R.drawable.ic_profile)
         }
 
         binding.signOutButton.setOnClickListener {
