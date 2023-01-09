@@ -27,7 +27,7 @@ class VehiclesDao {
 
     fun getUser(uid:String, callback:(User) -> Unit) {
         val docRef = userCollection.document(uid)
-        var user = User()
+        var user: User
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
