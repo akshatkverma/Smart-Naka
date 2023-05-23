@@ -35,8 +35,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.profileSectionSV.visibility = View.GONE
-
+        binding.profileSectionLl.visibility=View.GONE
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -50,18 +49,18 @@ class ProfileFragment : Fragment() {
         val dao = VehiclesDao()
 
         dao.getUser(currentUser.uid) { user ->
+            binding.profileSectionLl.visibility=View.VISIBLE
             binding.profileProgressBar.visibility = View.GONE
-            binding.profileSectionSV.visibility = View.VISIBLE
+            binding.nameTV.setText(user.name)
 
-            binding.nameTV.text = user.name
-            binding.emailTV.text = user.email
+            binding.emailTextEdit.setText(user.email)
 
             if(user.photoUrl != "")
                 Glide.with(requireContext()).load(user.photoUrl).into(binding.ivProfilePicture)
             else
                 binding.ivProfilePicture.setImageResource(R.drawable.ic_profile)
         }
-
+        
         binding.signOutButton.setOnClickListener {
             mAuth.signOut()
             googleSignInClient.signOut().addOnCompleteListener {

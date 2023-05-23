@@ -20,12 +20,12 @@ class VehiclesDao {
     fun addUser(user: User) {
         user.let {
             GlobalScope.launch(Dispatchers.IO) {
-                userCollection.document(user.uid).set(it)
+                userCollection.document(user.uid).set(user)
             }
         }
     }
 
-    fun getUser(uid:String, callback:(User) -> Unit) {
+    fun getUser(uid:String, callback:(User) -> Unit){
         val docRef = userCollection.document(uid)
         var user: User
         docRef.get()

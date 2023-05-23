@@ -25,11 +25,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textInputLoginEmail"
+            app:errorEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginTop="@dimen/loginViewsMargin"
             app:helperTextEnabled="true"
             app:helperText="*required"
-            app:errorEnabled="true"
+
             app:errorIconDrawable="@null">
 
             <com.google.android.material.textfield.TextInputEditText

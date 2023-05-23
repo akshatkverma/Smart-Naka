@@ -4,142 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
     tools:context="fragments.ProfileFragment">
 
     <ProgressBar
         android:id="@+id/profileProgressBar"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:elevation="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <ScrollView
-        android:id="@+id/profileSectionSV"
-        app:layout_constraintTop_toTopOf="parent"
+    <LinearLayout
+        android:id="@+id/profile_section_ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_height="wrap_content">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivProfilePicture"
+                android:layout_width="144dp"
+                android:layout_height="144dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_profile_default"
+                app:shapeAppearanceOverlay="@style/ImageView.Circle" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivProfilePictureEdit"
+                android:layout_width="28dp"
+                android:layout_gravity="center|bottom"
+                android:layout_height="28dp"
+                android:layout_marginLeft="-32dp"
+                android:background="@drawable/edit_profile_icon_background"
+                android:src="@drawable/ic_outline_edit_24" />
+        </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_margin="12dp"
+            app:hintTextColor="@color/primaryTextColor"
+            app:boxStrokeColor="@color/primaryTextColor"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:id="@+id/nameTV"
+                android:layout_height="match_parent"
+                android:hint="Name"
+                android:text="Name goes here"
+                android:clickable="false"
+                android:focusable="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_margin="12dp"
+            android:id="@+id/emailTextInput"
+            app:hintTextColor="@color/primaryTextColor"
+            app:boxStrokeColor="@color/primaryTextColor"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/emailTextEdit"
+                android:layout_height="match_parent"
+                android:hint="Email"
+                android:text="Email Goes here"
+                android:clickable="false"
+                android:focusable="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/profileHeading"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:text="Profile Section"
-                    android:textAlignment="center"
-                    android:textSize="35sp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/signOutButton"
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Out"/>
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/ivProfilePicture"
-                    android:layout_width="144dp"
-                    android:layout_height="144dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_profile"
-                    android:layout_marginTop="32dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/profileHeading"
-                    app:shapeAppearanceOverlay="@style/ImageView.Circle" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivProfilePictureEdit"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/edit_profile_icon_background"
-                    android:padding="2dp"
-                    android:src="@drawable/ic_outline_edit_24"
-                    app:layout_constraintBottom_toBottomOf="@id/ivProfilePicture"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfilePicture" />
-
-                <!--        <de.hdodenhof.circleimageview.CircleImageView-->
-                <!--            android:id="@+id/img"-->
-                <!--            android:src="@drawable/ic_profile"-->
-                <!--            android:layout_width="150dp"-->
-                <!--            android:layout_height="150dp"-->
-                <!--            android:layout_marginTop="30dp"-->
-                <!--            android:layout_gravity="center" />-->
-
-                <LinearLayout
-                    android:id="@+id/profileName"
-                    android:layout_marginTop="36dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/ivProfilePicture">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Name : "
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/nameTV"
-                        android:text="Name details not available"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/profileEmail"
-                    android:layout_marginTop="24dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/profileName">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="E-mail : "
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/emailTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp" />
-                </LinearLayout>
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/signOutButton"
-                    android:layout_marginTop="24dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sign Out"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/profileEmail"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </ScrollView>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
